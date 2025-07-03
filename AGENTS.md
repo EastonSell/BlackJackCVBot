@@ -37,6 +37,7 @@ Progress bar legend → ⬜ 0 % · ▣ 25 % · ◧ 50 % · ◩ 75 % · ■ 100 %
 | T-02 | Design API schema           | Lead-Dev      | T-01         | ⬜ 0 %  | ▲     |
 | T-03 | Implement endpoint `/users` | Backend-Agent | T-02         | ⬜ 0 %  | ▲     |
 | T-04 | Unit tests for `/users`     | QA-Agent      | T-03         | ⬜ 0 %  | ▲     |
+| T-05 | Set up FastAPI skeleton     | Implementation-Agent | T-01 | ▣ 25 % | Added main.py and requirements |
 | …    | …                           | …             | …            | …      | …     |
 
 > **How to update:**
@@ -52,6 +53,7 @@ Progress bar legend → ⬜ 0 % · ▣ 25 % · ◧ 50 % · ◩ 75 % · ■ 100 %
 | Branch                   | Purpose             | Latest Commit | PR # | Status |
 | ------------------------ | ------------------- | ------------- | ---- | ------ |
 | `feature/users-endpoint` | Implements `/users` | abc1234       | #17  | ◧ 50 % |
+| `work`                   | FastAPI skeleton    | 583ffb4       | n/a  | ▣ 25 % |
 | ▲                        | ▲                   | ▲             | ▲    | ▲      |
 
 ---
@@ -75,10 +77,10 @@ Progress bar legend → ⬜ 0 % · ▣ 25 % · ◧ 50 % · ◩ 75 % · ■ 100 %
 ## 6. Daily Stand-Up (YYYY-MM-DD)
 
 ```text
-🗓️ YYYY-MM-DD
-What I did yesterday:  ▲
-What I’m doing today:  ▲
-Blockers:              ▲
+🗓️ 2025-07-03
+What I did yesterday:  N/A (first entry)
+What I’m doing today:  Setting up FastAPI skeleton
+Blockers:              None
 ```
 
 (Each agent adds their own block; boss agent summarizes.)
