@@ -1,6 +1,7 @@
 """Main FastAPI application exposing card counting endpoints."""
 
 from pathlib import Path
+import os
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -38,7 +39,8 @@ users_db = [
     User(id=2, name="Bob"),
 ]
 
-card_counter = CardCounter()
+num_decks = int(os.getenv("NUM_DECKS", "1"))
+card_counter = CardCounter(decks=num_decks)
 table_layout = TableLayout()
 
 @app.get("/")
