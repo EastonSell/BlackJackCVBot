@@ -1,7 +1,13 @@
+"""Blackjack utilities used by the API."""
+
 from typing import List
 
 class CardCounter:
-    """Simple Hi-Lo card counter."""
+    """Simple Hi-Lo card counter.
+
+    The counter is stateful and not thread-safe, so it should be instantiated
+    per-session or protected appropriately when used in a web context.
+    """
 
     def __init__(self) -> None:
         self.running_count = 0
@@ -23,7 +29,15 @@ class CardCounter:
 
 
 def basic_strategy(player_total: int, dealer_card: str) -> str:
-    """Return a very simplified blackjack decision."""
+    """Return a very simplified blackjack decision.
+
+    Parameters
+    ----------
+    player_total: int
+        Current total of the player's hand.
+    dealer_card: str
+        Visible dealer card.
+    """
     dealer = dealer_card.upper()
     if player_total >= 17:
         return "stand"

@@ -4,15 +4,41 @@
   <meta charset="UTF-8" />
   <title>Table Layout</title>
   <style>
-    canvas { border:1px solid #000; }
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: auto;
+      padding: 1em;
+      background: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    #controls {
+      margin-bottom: 1em;
+      text-align: center;
+    }
+    canvas {
+      border: 1px solid #444;
+      display: block;
+      margin: auto;
+    }
+    button {
+      margin-top: 0.5em;
+      padding: 0.5em 1em;
+      font-size: 1em;
+    }
   </style>
 </head>
 <body>
-<h1>Draw card boxes</h1>
-<p>Upload a table screenshot and draw rectangles for dealer and players. Press Save to send layout.</p>
-<input type="file" id="imgInput" accept="image/*"><br><br>
-<canvas id="canvas"></canvas><br>
-<button id="save">Save Layout</button>
+<h1>Table Layout Editor</h1>
+<div id="controls">
+  <p>Upload a screenshot of the table and draw rectangles for the dealer and players. The first box will be used for the dealer position.</p>
+  <input type="file" id="imgInput" accept="image/*"><br>
+  <button id="save">Save Layout</button>
+</div>
+<canvas id="canvas"></canvas>
 <script>
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');

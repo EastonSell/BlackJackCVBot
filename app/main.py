@@ -1,12 +1,19 @@
+"""Main FastAPI application exposing card counting endpoints."""
+
+from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from .blackjack import CardCounter, basic_strategy
 
+# Resolve path to static files relative to this file so the app works when
+# executed from any working directory.
+STATIC_DIR = Path(__file__).parent / "static"
+
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 class User(BaseModel):
     id: int
@@ -22,7 +29,8 @@ class BoundingBox(BaseModel):
 
 class TableLayout(BaseModel):
     dealer: BoundingBox | None = None
-    players: list[BoundingBox] = []
+    # Use default_factory to avoid shared mutable defaults
+    players: list[BoundingBox] = Field(default_factory=list)
 
 # Simple in-memory store for example purposes
 users_db = [
@@ -35,21 +43,25 @@ table_layout = TableLayout()
 
 @app.get("/")
 def read_root():
+    """Health check endpoint."""
     return {"message": "Welcome to BlackJackCVBot"}
 
 @app.get("/users", response_model=list[User])
 def read_users():
+    """Return example list of users."""
     return users_db
 
 
 @app.get("/draw", response_class=HTMLResponse)
 def draw_page(request: Request):
-    with open("app/static/draw.html", "r", encoding="utf-8") as f:
+    """Serve the drawing UI used to configure table layout."""
+    with open(STATIC_DIR / "draw.html", "r", encoding="utf-8") as f:
         return HTMLResponse(f.read())
 
 
 @app.post("/layout", response_model=TableLayout)
 def set_layout(layout: TableLayout):
+    """Persist the provided table layout in memory."""
     global table_layout
     table_layout = layout
     return table_layout
@@ -57,11 +69,13 @@ def set_layout(layout: TableLayout):
 
 @app.get("/layout", response_model=TableLayout)
 def get_layout():
+    """Return the currently configured table layout."""
     return table_layout
 
 
 @app.post("/reset_count")
 def reset_count():
+    """Reset the running Hi-Lo card count."""
     card_counter.reset()
     return {"count": card_counter.get_count()}
 
@@ -72,12 +86,14 @@ class CardInput(BaseModel):
 
 @app.post("/count")
 def add_card(input: CardInput):
+    """Add a card to the counter and return the updated count."""
     card_counter.add_card(input.card)
     return {"count": card_counter.get_count()}
 
 
 @app.get("/count")
 def get_count():
+    """Return the current card count."""
     return {"count": card_counter.get_count()}
 
 
@@ -88,5 +104,6 @@ class SuggestInput(BaseModel):
 
 @app.post("/suggest")
 def suggest_action(input: SuggestInput):
+    """Return basic-strategy advice based on totals."""
     action = basic_strategy(input.player_total, input.dealer_card)
     return {"action": action}
