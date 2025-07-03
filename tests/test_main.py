@@ -35,6 +35,13 @@ def test_suggest_action():
     assert response.json()["action"] in {"hit", "stand", "double"}
 
 
+def test_suggest_action_alias():
+    payload = {"player_total": 10, "dealer_card": "Ace of Spades"}
+    response = client.post("/suggest", json=payload)
+    assert response.status_code == 200
+    assert response.json()["action"] == "hit"
+
+
 def test_layout_roundtrip():
     layout = {
         "dealer": {"x1": 0, "y1": 0, "x2": 10, "y2": 10},

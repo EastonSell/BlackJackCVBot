@@ -100,7 +100,8 @@ def basic_strategy(player_total: int, dealer_card: str) -> str:
     dealer_card: str
         Visible dealer card.
     """
-    dealer = dealer_card.upper()
+    dealer_norm = normalize_card(dealer_card)
+    dealer = dealer_norm if dealer_norm is not None else dealer_card.upper()
     if player_total >= 17:
         return "stand"
     if player_total >= 13 and dealer in ["2", "3", "4", "5", "6"]:
