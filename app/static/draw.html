@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Table Layout</title>
+  <style>
+    canvas { border:1px solid #000; }
+  </style>
+</head>
+<body>
+<h1>Draw card boxes</h1>
+<p>Upload a table screenshot and draw rectangles for dealer and players. Press Save to send layout.</p>
+<input type="file" id="imgInput" accept="image/*"><br><br>
+<canvas id="canvas"></canvas><br>
+<button id="save">Save Layout</button>
+<script>
+let canvas = document.getElementById('canvas');
+let ctx = canvas.getContext('2d');
+let img = new Image();
+let drawing = false;
+let startX, startY;
+let boxes = [];
+
+img.onload = function() {
+  canvas.width = img.width;
+  canvas.height = img.height;
+  ctx.drawImage(img,0,0);
+};
+
+document.getElementById('imgInput').onchange = function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    img.src = evt.target.result;
+  };
+  reader.readAsDataURL(file);
+};
+
+canvas.onmousedown = function(e){
+  drawing = true;
+  startX = e.offsetX; startY = e.offsetY;
+};
+
+canvas.onmouseup = function(e){
+  if(!drawing) return;
+  drawing = false;
+  const x2 = e.offsetX; const y2 = e.offsetY;
+  boxes.push({x1:startX,y1:startY,x2:x2,y2:y2});
+  redraw();
+};
+
+function redraw(){
+  ctx.drawImage(img,0,0);
+  ctx.strokeStyle = 'red';
+  boxes.forEach(b=>{
+    ctx.strokeRect(b.x1,b.y1,b.x2-b.x1,b.y2-b.y1);
+  });
+}
+
+document.getElementById('save').onclick = function(){
+  fetch('/layout', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({dealer:boxes[0], players:boxes.slice(1)})
+  }).then(r=>alert('Saved layout')); 
+};
+</script>
+</body>
+</html>
