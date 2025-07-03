@@ -102,8 +102,25 @@ class SuggestInput(BaseModel):
     dealer_card: str
 
 
+class DeckConfig(BaseModel):
+    decks: int
+
+
 @app.post("/suggest")
 def suggest_action(input: SuggestInput):
     """Return basic-strategy advice based on totals."""
     action = basic_strategy(input.player_total, input.dealer_card)
     return {"action": action}
+
+
+@app.post("/decks")
+def set_decks(config: DeckConfig):
+    """Configure the number of decks used for true count calculations."""
+    card_counter.set_decks(config.decks)
+    return {"decks": card_counter.num_decks}
+
+
+@app.get("/true_count")
+def get_true_count():
+    """Return the current Hi-Lo true count."""
+    return {"true_count": card_counter.get_true_count()}

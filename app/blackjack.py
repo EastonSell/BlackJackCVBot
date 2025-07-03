@@ -1,19 +1,26 @@
 """Blackjack utilities used by the API."""
 
-from typing import List
 
 class CardCounter:
-    """Simple Hi-Lo card counter.
+    """Simple Hi-Lo card counter with true count support.
 
     The counter is stateful and not thread-safe, so it should be instantiated
     per-session or protected appropriately when used in a web context.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, decks: int = 1) -> None:
         self.running_count = 0
+        self.cards_dealt = 0
+        self.num_decks = decks
 
     def reset(self) -> None:
         self.running_count = 0
+        self.cards_dealt = 0
+
+    def set_decks(self, decks: int) -> None:
+        """Configure number of decks used for true count calculations."""
+        self.num_decks = max(1, decks)
+        self.cards_dealt = 0
 
     def add_card(self, card: str) -> None:
         """Update running count with a single card."""
@@ -23,9 +30,17 @@ class CardCounter:
         elif value in ["10", "J", "Q", "K", "A"]:
             self.running_count -= 1
         # 7,8,9 are zero
+        self.cards_dealt += 1
 
     def get_count(self) -> int:
         return self.running_count
+
+    def get_true_count(self) -> float:
+        """Return the Hi-Lo true count as a floating point number."""
+        decks_remaining = ((self.num_decks * 52) - self.cards_dealt) / 52
+        if decks_remaining <= 0:
+            decks_remaining = 1
+        return self.running_count / decks_remaining
 
 
 def basic_strategy(player_total: int, dealer_card: str) -> str:

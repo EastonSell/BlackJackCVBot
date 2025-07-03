@@ -38,6 +38,7 @@ Progress bar legend → ⬜ 0 % · ▣ 25 % · ◧ 50 % · ◩ 75 % · ■ 100 %
 | T-03 | Implement endpoint `/users` | Backend-Agent | T-02         | ■ 100 % | Returns list of `User` models |
 | T-04 | Unit tests for `/users`     | QA-Agent      | T-03         | ■ 100 % | pytest covering endpoints |
 | T-05 | Set up FastAPI skeleton     | Implementation-Agent | T-01 | ■ 100 % | FastAPI app with endpoints |
+| T-06 | True count endpoint         | Backend-Agent | T-05 | ■ 100 % | Adds `/decks` and `/true_count` |
 | …    | …                           | …             | …            | …      | …     |
 
 > **How to update:**

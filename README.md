@@ -1,6 +1,12 @@
 # BlackJackCVBot
 
-This project is a simple FastAPI service for demonstrating multi-agent collaboration workflows. It exposes a `/` root endpoint and a `/users` endpoint returning a list of example users.
+This project is a simple FastAPI service for demonstrating multi-agent collaboration workflows. It exposes:
+
+* `/` — health check
+* `/users` — list of example users
+* `/count` — manage a running Hi-Lo count
+* `/decks` — configure number of decks for true count
+* `/true_count` — retrieve the current true count
 
 ## Running the server
 

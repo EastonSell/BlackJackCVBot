@@ -57,6 +57,17 @@ def test_count_endpoints():
     assert response.json()["count"] == -1
 
 
+def test_decks_and_true_count():
+    client.post("/decks", json={"decks": 1})
+    client.post("/reset_count")
+    client.post("/count", json={"card": "5"})
+    response = client.get("/true_count")
+    assert response.status_code == 200
+    true_count = response.json()["true_count"]
+    assert isinstance(true_count, float)
+    assert true_count > 1
+
+
 def test_draw_page():
     response = client.get("/draw")
     assert response.status_code == 200
