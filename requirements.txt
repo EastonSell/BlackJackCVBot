@@ -4,3 +4,8 @@ pytest
 fastapi[testclient]
 
 httpx<0.28
+pyautogui
+pygetwindow
+pytesseract
+Pillow
+pyttsx3
