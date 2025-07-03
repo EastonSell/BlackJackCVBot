@@ -33,11 +33,11 @@ Progress bar legend → ⬜ 0 % · ▣ 25 % · ◧ 50 % · ◩ 75 % · ■ 100 %
 
 | ID   | Description                 | Owner         | Dependencies | Status | Notes |
 | ---- | --------------------------- | ------------- | ------------ | ------ | ----- |
-| T-01 | Set up repo & CI            | DevOps-Agent  | none         | ⬜ 0 %  | ▲     |
-| T-02 | Design API schema           | Lead-Dev      | T-01         | ⬜ 0 %  | ▲     |
-| T-03 | Implement endpoint `/users` | Backend-Agent | T-02         | ⬜ 0 %  | ▲     |
-| T-04 | Unit tests for `/users`     | QA-Agent      | T-03         | ⬜ 0 %  | ▲     |
-| T-05 | Set up FastAPI skeleton     | Implementation-Agent | T-01 | ▣ 25 % | Added main.py and requirements |
+| T-01 | Set up repo & CI            | DevOps-Agent  | none         | ■ 100 % | Added GitHub Actions |
+| T-02 | Design API schema           | Lead-Dev      | T-01         | ■ 100 % | Added `User` Pydantic model |
+| T-03 | Implement endpoint `/users` | Backend-Agent | T-02         | ■ 100 % | Returns list of `User` models |
+| T-04 | Unit tests for `/users`     | QA-Agent      | T-03         | ■ 100 % | pytest covering endpoints |
+| T-05 | Set up FastAPI skeleton     | Implementation-Agent | T-01 | ■ 100 % | FastAPI app with endpoints |
 | …    | …                           | …             | …            | …      | …     |
 
 > **How to update:**
@@ -53,7 +53,7 @@ Progress bar legend → ⬜ 0 % · ▣ 25 % · ◧ 50 % · ◩ 75 % · ■ 100 %
 | Branch                   | Purpose             | Latest Commit | PR # | Status |
 | ------------------------ | ------------------- | ------------- | ---- | ------ |
 | `feature/users-endpoint` | Implements `/users` | abc1234       | #17  | ◧ 50 % |
-| `work`                   | FastAPI skeleton    | 583ffb4       | n/a  | ▣ 25 % |
+| `work`                   | FastAPI skeleton    | 034fd3e       | n/a  | ■ 100 % |
 | ▲                        | ▲                   | ▲             | ▲    | ▲      |
 
 ---
@@ -78,8 +78,8 @@ Progress bar legend → ⬜ 0 % · ▣ 25 % · ◧ 50 % · ◩ 75 % · ■ 100 %
 
 ```text
 🗓️ 2025-07-03
-What I did yesterday:  N/A (first entry)
-What I’m doing today:  Setting up FastAPI skeleton
+What I did yesterday:  Initial skeleton setup
+What I’m doing today:  Completed endpoints, tests and CI
 Blockers:              None
 ```
 
