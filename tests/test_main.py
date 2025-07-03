@@ -33,3 +33,31 @@ def test_suggest_action():
     response = client.post("/suggest", json=payload)
     assert response.status_code == 200
     assert response.json()["action"] in {"hit", "stand", "double"}
+
+
+def test_layout_roundtrip():
+    layout = {
+        "dealer": {"x1": 0, "y1": 0, "x2": 10, "y2": 10},
+        "players": [{"x1": 1, "y1": 1, "x2": 5, "y2": 5}],
+    }
+    response = client.post("/layout", json=layout)
+    assert response.status_code == 200
+    assert response.json() == layout
+
+    response = client.get("/layout")
+    assert response.status_code == 200
+    assert response.json() == layout
+
+
+def test_count_endpoints():
+    client.post("/reset_count")
+    client.post("/count", json={"card": "A"})
+    response = client.get("/count")
+    assert response.status_code == 200
+    assert response.json()["count"] == -1
+
+
+def test_draw_page():
+    response = client.get("/draw")
+    assert response.status_code == 200
+    assert "Table Layout" in response.text
