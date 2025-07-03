@@ -2,7 +2,7 @@
 
 from pathlib import Path
 import os
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, UploadFile
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -10,6 +10,7 @@ from pydantic.dataclasses import dataclass
 from fastapi.encoders import jsonable_encoder
 
 from .blackjack import CardCounter, basic_strategy
+from .vision import recognize_card, recognize_card_bytes
 
 # Resolve path to static files relative to this file so the app works when
 # executed from any working directory.
@@ -131,3 +132,11 @@ def set_decks(config: DeckConfig):
 def get_true_count():
     """Return the current Hi-Lo true count."""
     return {"true_count": card_counter.get_true_count()}
+
+
+@app.post("/recognize_card")
+async def recognize_card_endpoint(file: UploadFile):
+    """Detect and normalize a card value from an uploaded image."""
+    data = await file.read()
+    card = recognize_card_bytes(data)
+    return {"card": card}

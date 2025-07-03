@@ -9,6 +9,7 @@ This project is a simple FastAPI service for demonstrating multi-agent collabora
   will be parsed correctly.
 * `/decks` — configure number of decks for true count
 * `/true_count` — retrieve the current true count
+* `/recognize_card` — OCR endpoint that detects a card value from an uploaded image
 
 ## Running the server
 
