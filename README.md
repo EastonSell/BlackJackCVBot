@@ -4,7 +4,9 @@ This project is a simple FastAPI service for demonstrating multi-agent collabora
 
 * `/` — health check
 * `/users` — list of example users
-* `/count` — manage a running Hi-Lo count
+* `/count` — manage a running Hi-Lo count. The API now understands
+  common card names so inputs like `"Ace of Spades"` or `"10H"`
+  will be parsed correctly.
 * `/decks` — configure number of decks for true count
 * `/true_count` — retrieve the current true count
 
