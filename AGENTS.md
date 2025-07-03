@@ -37,6 +37,7 @@ Progress bar legend → ⬜ 0 % · ▣ 25 % · ◧ 50 % · ◩ 75 % · ■ 100 %
 | T-02 | Design API schema           | Lead-Dev      | T-01         | ⬜ 0 %  | ▲     |
 | T-03 | Implement endpoint `/users` | Backend-Agent | T-02         | ⬜ 0 %  | ▲     |
 | T-04 | Unit tests for `/users`     | QA-Agent      | T-03         | ⬜ 0 %  | ▲     |
+| T-05 | Document TODO summary       | Docs-Agent    | none         | ▣ 25 % | - scanning repo for TODOs |
 | …    | …                           | …             | …            | …      | …     |
 
 > **How to update:**
@@ -53,6 +54,7 @@ Progress bar legend → ⬜ 0 % · ▣ 25 % · ◧ 50 % · ◩ 75 % · ■ 100 %
 | ------------------------ | ------------------- | ------------- | ---- | ------ |
 | `feature/users-endpoint` | Implements `/users` | abc1234       | #17  | ◧ 50 % |
 | ▲                        | ▲                   | ▲             | ▲    | ▲      |
+| `work`                   | TODO summary docs   | 99b30b3       | N/A  | ▣ 25 % |
 
 ---
 
@@ -82,6 +84,13 @@ Blockers:              ▲
 ```
 
 (Each agent adds their own block; boss agent summarizes.)
+
+```text
+🗓️ 2025-07-03
+What I did yesterday:  N/A
+What I’m doing today:  Document TODO summary
+Blockers:              None
+```
 
 ---
 
