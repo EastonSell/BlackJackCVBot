@@ -19,6 +19,13 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
+On Windows you can use the provided batch script to set up everything and
+launch the server automatically:
+
+```bat
+run.bat
+```
+
 Set `NUM_DECKS` to configure the number of decks used for true count
 calculations at startup:
 
