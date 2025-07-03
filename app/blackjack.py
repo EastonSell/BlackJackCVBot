@@ -1,5 +1,47 @@
 """Blackjack utilities used by the API."""
 
+from __future__ import annotations
+
+import re
+
+CARD_SYNONYMS = {
+    "A": {"A", "ACE"},
+    "K": {"K", "KING"},
+    "Q": {"Q", "QUEEN"},
+    "J": {"J", "JACK"},
+    "10": {"10", "T", "TEN"},
+    "9": {"9", "NINE"},
+    "8": {"8", "EIGHT"},
+    "7": {"7", "SEVEN"},
+    "6": {"6", "SIX"},
+    "5": {"5", "FIVE"},
+    "4": {"4", "FOUR"},
+    "3": {"3", "THREE"},
+    "2": {"2", "TWO"},
+}
+
+SUIT_WORDS = {
+    "H", "HEART", "HEARTS",
+    "S", "SPADE", "SPADES",
+    "D", "DIAMOND", "DIAMONDS",
+    "C", "CLUB", "CLUBS",
+}
+
+
+def normalize_card(text: str) -> str | None:
+    """Return canonical card value from various textual forms."""
+    cleaned = re.sub(r"[^A-Za-z0-9]", " ", text).upper().split()
+    tokens = [t for t in cleaned if t not in SUIT_WORDS and t not in {"OF", "THE"}]
+    if not tokens:
+        return None
+    token = tokens[0]
+    for value, names in CARD_SYNONYMS.items():
+        if token in names:
+            return value
+        if len(token) > 1 and token[-1] in "HSDC" and token[:-1] in names:
+            return value
+    return None
+
 
 class CardCounter:
     """Simple Hi-Lo card counter with true count support.
@@ -23,8 +65,13 @@ class CardCounter:
         self.cards_dealt = 0
 
     def add_card(self, card: str) -> None:
-        """Update running count with a single card."""
-        value = card.upper()
+        """Update running count with a single card.
+
+        The input string can include suits or full card names, e.g. "10H" or
+        "Ace of Spades". Only the rank is used for counting.
+        """
+        norm = normalize_card(card)
+        value = norm if norm is not None else card.upper()
         if value in ["2", "3", "4", "5", "6"]:
             self.running_count += 1
         elif value in ["10", "J", "Q", "K", "A"]:
