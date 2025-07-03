@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import pytest
 from fastapi.testclient import TestClient
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
@@ -90,3 +91,12 @@ def test_draw_page():
     response = client.get("/draw")
     assert response.status_code == 200
     assert "Table Layout" in response.text
+
+
+def test_bounding_box_immutable():
+    from dataclasses import FrozenInstanceError
+    from app.main import BoundingBox
+
+    bbox = BoundingBox(0, 0, 10, 10)
+    with pytest.raises(FrozenInstanceError):
+        bbox.x1 = 1

@@ -6,6 +6,8 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
+from pydantic.dataclasses import dataclass
+from fastapi.encoders import jsonable_encoder
 
 from .blackjack import CardCounter, basic_strategy
 
@@ -21,7 +23,10 @@ class User(BaseModel):
     name: str
 
 
-class BoundingBox(BaseModel):
+@dataclass(frozen=True)
+class BoundingBox:
+    """Immutable rectangle used for layout coordinates."""
+
     x1: int
     y1: int
     x2: int
@@ -30,8 +35,8 @@ class BoundingBox(BaseModel):
 
 class TableLayout(BaseModel):
     dealer: BoundingBox | None = None
-    # Use default_factory to avoid shared mutable defaults
-    players: list[BoundingBox] = Field(default_factory=list)
+    # Use tuple for immutability
+    players: tuple[BoundingBox, ...] = Field(default_factory=tuple)
 
 # Simple in-memory store for example purposes
 users_db = [
@@ -66,13 +71,13 @@ def set_layout(layout: TableLayout):
     """Persist the provided table layout in memory."""
     global table_layout
     table_layout = layout
-    return table_layout
+    return jsonable_encoder(table_layout)
 
 
 @app.get("/layout", response_model=TableLayout)
 def get_layout():
     """Return the currently configured table layout."""
-    return table_layout
+    return jsonable_encoder(table_layout)
 
 
 @app.post("/reset_count")
