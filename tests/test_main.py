@@ -20,3 +20,16 @@ def test_read_users():
     assert isinstance(data, list)
     assert data
     assert all("id" in user and "name" in user for user in data)
+
+
+def test_reset_count():
+    response = client.post("/reset_count")
+    assert response.status_code == 200
+    assert response.json()["count"] == 0
+
+
+def test_suggest_action():
+    payload = {"player_total": 11, "dealer_card": "6"}
+    response = client.post("/suggest", json=payload)
+    assert response.status_code == 200
+    assert response.json()["action"] in {"hit", "stand", "double"}
